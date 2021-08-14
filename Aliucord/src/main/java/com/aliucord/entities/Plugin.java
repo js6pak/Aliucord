@@ -11,9 +11,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.aliucord.api.CommandsAPI;
-import com.aliucord.api.PatcherAPI;
-import com.aliucord.api.SettingsAPI;
+import com.aliucord.api.*;
 import com.discord.app.AppBottomSheet;
 import com.discord.app.AppFragment;
 

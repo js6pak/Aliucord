@@ -5,17 +5,20 @@
 
 package com.aliucord.entities;
 
+import androidx.annotation.NonNull;
+
 import com.aliucord.Main;
 import com.aliucord.utils.ReflectUtils;
 import com.discord.api.message.embed.*;
 import com.discord.api.utcdatetime.UtcDateTime;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
-/** {@link com.discord.api.message.embed.MessageEmbed} builder */
+/**
+ * {@link com.discord.api.message.embed.MessageEmbed} builder
+ */
 @SuppressWarnings({"unused"})
 public class MessageEmbedBuilder {
     // reflect moment
@@ -62,7 +65,9 @@ public class MessageEmbedBuilder {
             urlField.setAccessible(true);
             videoField = c.getDeclaredField("video");
             videoField.setAccessible(true);
-        } catch (Exception e) { Main.logger.error(e); }
+        } catch (Exception e) {
+            Main.logger.error(e);
+        }
     }
 
     private final com.discord.api.message.embed.MessageEmbed embed;
@@ -76,14 +81,17 @@ public class MessageEmbedBuilder {
 
     /**
      * Creates an embed with a specific type.
+     *
      * @param type {@link EmbedType}
      */
     public MessageEmbedBuilder(EmbedType type) {
-        embed = new com.discord.api.message.embed.MessageEmbed();
+        embed = make(MessageEmbed.class);
         setType(type);
     }
 
-    /** Builds the MessageEmbed */
+    /**
+     * Builds the MessageEmbed
+     */
     public com.discord.api.message.embed.MessageEmbed build() {
         return embed;
     }
@@ -97,7 +105,7 @@ public class MessageEmbedBuilder {
     }
 
     /**
-     * @param name Name of the author.
+     * @param name    Name of the author.
      * @param iconUrl Icon URL of the author.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
@@ -106,36 +114,42 @@ public class MessageEmbedBuilder {
     }
 
     /**
-     * @param name Name of the author.
+     * @param name         Name of the author.
      * @param proxyIconUrl Proxy icon URL of the author.
-     * @param iconUrl Icon URL of the author.
+     * @param iconUrl      Icon URL of the author.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setAuthor(String name, String iconUrl, String proxyIconUrl) {
-        EmbedAuthor author = new EmbedAuthor();
+        EmbedAuthor author = make(EmbedAuthor.class);
         Class<EmbedAuthor> c = EmbedAuthor.class;
         try {
             ReflectUtils.setField(c, author, "name", name);
             ReflectUtils.setField(c, author, "iconUrl", iconUrl);
             ReflectUtils.setField(c, author, "proxyIconUrl", proxyIconUrl);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return setAuthor(author);
     }
 
     /**
      * Sets the embed author.
+     *
      * @param author {@link EmbedAuthor}
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setAuthor(EmbedAuthor author) {
         try {
             authorField.set(embed, author);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets a random embed color.
+     *
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setRandomColor() {
@@ -144,32 +158,39 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed color.
+     *
      * @param color Embed color.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setColor(Integer color) {
         try {
             colorField.set(embed, color);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed description.
+     *
      * @param description Embed description.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setDescription(String description) {
         try {
             descriptionField.set(embed, description);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Adds a field to the embed.
-     * @param name Name of the field.
-     * @param value Content of the field.
+     *
+     * @param name   Name of the field.
+     * @param value  Content of the field.
      * @param inline Whether to inline the field or not.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
@@ -179,6 +200,7 @@ public class MessageEmbedBuilder {
 
     /**
      * Adds a field to the embed.
+     *
      * @param field {@link EmbedField}
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#addField(String, String, boolean)
@@ -194,12 +216,15 @@ public class MessageEmbedBuilder {
                 aList.add(field);
                 fieldsField.set(embed, aList);
             }
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets embed fields.
+     *
      * @param fields {@link List} of {@link EmbedField}
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#createField(String, String, Boolean)
@@ -207,12 +232,15 @@ public class MessageEmbedBuilder {
     public MessageEmbedBuilder setFields(List<EmbedField> fields) {
         try {
             fieldsField.set(embed, fields);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed footer.
+     *
      * @param text Footer text.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
@@ -222,7 +250,8 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed footer.
-     * @param text Footer text.
+     *
+     * @param text    Footer text.
      * @param iconUrl Footer icon URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
@@ -232,24 +261,28 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed footer.
-     * @param text Footer text.
-     * @param iconUrl Footer icon URL.
+     *
+     * @param text         Footer text.
+     * @param iconUrl      Footer icon URL.
      * @param proxyIconUrl Footer Proxy icon URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setFooter(String text, String iconUrl, String proxyIconUrl) {
-        EmbedFooter footer = new EmbedFooter();
+        EmbedFooter footer = make(EmbedFooter.class);
         Class<EmbedFooter> c = EmbedFooter.class;
         try {
             ReflectUtils.setField(c, footer, "text", text);
             ReflectUtils.setField(c, footer, "iconUrl", iconUrl);
             ReflectUtils.setField(c, footer, "proxyIconUrl", proxyIconUrl);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return setFooter(footer);
     }
 
     /**
      * Sets the embed footer.
+     *
      * @param footer {@link EmbedFooter}
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setFooter(String, String, String)
@@ -257,12 +290,15 @@ public class MessageEmbedBuilder {
     public MessageEmbedBuilder setFooter(EmbedFooter footer) {
         try {
             footerField.set(embed, footer);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed image.
+     *
      * @param imageUrl Image URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setImage(String, String, Integer, Integer)
@@ -273,7 +309,8 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed image.
-     * @param imageUrl Image URL.
+     *
+     * @param imageUrl      Image URL.
      * @param proxyImageUrl Proxy image URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setImage(String, String, Integer, Integer)
@@ -284,27 +321,31 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed image.
-     * @param imageUrl Image URL.
+     *
+     * @param imageUrl      Image URL.
      * @param proxyImageUrl Proxy image URL.
-     * @param imageHeight Image height.
-     * @param imageWidth Image width.
+     * @param imageHeight   Image height.
+     * @param imageWidth    Image width.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setImage(String, String)
      */
     public MessageEmbedBuilder setImage(String imageUrl, String proxyImageUrl, Integer imageHeight, Integer imageWidth) {
-        EmbedImage image = new EmbedImage();
+        EmbedImage image = make(EmbedImage.class);
         Class<EmbedImage> c = EmbedImage.class;
         try {
             ReflectUtils.setField(c, image, "url", imageUrl);
             ReflectUtils.setField(c, image, "proxyUrl", proxyImageUrl);
             ReflectUtils.setField(c, image, "height", imageHeight);
             ReflectUtils.setField(c, image, "width", imageWidth);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return setImage(image);
     }
 
     /**
      * Sets the embed image.
+     *
      * @param image {@link EmbedImage}
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setImage(String, String)
@@ -312,24 +353,30 @@ public class MessageEmbedBuilder {
     public MessageEmbedBuilder setImage(EmbedImage image) {
         try {
             imageField.set(embed, image);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed provider.
+     *
      * @param provider {@link EmbedProvider}.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setProvider(EmbedProvider provider) {
         try {
             providerField.set(embed, provider);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed thumbnail.
+     *
      * @param imageUrl Image URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setThumbnail(String, String, Integer, Integer)
@@ -340,7 +387,8 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed thumbnail.
-     * @param imageUrl Image URL.
+     *
+     * @param imageUrl      Image URL.
      * @param proxyImageUrl Proxy image URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setThumbnail(String, String, Integer, Integer)
@@ -351,27 +399,31 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed thumbnail.
-     * @param imageUrl Image URL.
+     *
+     * @param imageUrl      Image URL.
      * @param proxyImageUrl Proxy image URL.
-     * @param imageHeight Image height.
-     * @param imageWidth Image width.
+     * @param imageHeight   Image height.
+     * @param imageWidth    Image width.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setThumbnail(String, String)
      */
     public MessageEmbedBuilder setThumbnail(String imageUrl, String proxyImageUrl, Integer imageHeight, Integer imageWidth) {
-        EmbedThumbnail image = new EmbedThumbnail();
+        EmbedThumbnail image = make(EmbedThumbnail.class);
         Class<EmbedThumbnail> c = EmbedThumbnail.class;
         try {
             ReflectUtils.setField(c, image, "url", imageUrl);
             ReflectUtils.setField(c, image, "proxyUrl", proxyImageUrl);
             ReflectUtils.setField(c, image, "height", imageHeight);
             ReflectUtils.setField(c, image, "width", imageWidth);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return setThumbnail(image);
     }
 
     /**
      * Sets the embed thumbnail.
+     *
      * @param image {@link EmbedThumbnail}
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setThumbnail(String, String)
@@ -379,77 +431,95 @@ public class MessageEmbedBuilder {
     public MessageEmbedBuilder setThumbnail(EmbedThumbnail image) {
         try {
             thumbnailField.set(embed, image);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed timestamp.
+     *
      * @param timestamp {@link UtcDateTime} timestamp.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setTimestamp(UtcDateTime timestamp) {
         try {
             timestampField.set(embed, timestamp);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed title.
+     *
      * @param title Embed title.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setTitle(String title) {
         try {
             titleField.set(embed, title);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed type.
+     *
      * @param type {@link EmbedType}.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setType(EmbedType type) {
         try {
             typeField.set(embed, type);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed URL.
+     *
      * @param url Embed URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setUrl(String url) {
         try {
             urlField.set(embed, url);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
      * Sets the embed video.
+     *
      * @param videoUrl Video URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
     public MessageEmbedBuilder setVideo(String videoUrl, String proxyVideoUrl, Integer height, Integer width) {
-        EmbedVideo video = new EmbedVideo();
+        EmbedVideo video = make(EmbedVideo.class);
         Class<EmbedVideo> c = EmbedVideo.class;
         try {
             ReflectUtils.setField(c, video, "url", videoUrl);
             ReflectUtils.setField(c, video, "proxyUrl", proxyVideoUrl);
             ReflectUtils.setField(c, video, "height", height);
             ReflectUtils.setField(c, video, "width", width);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return setVideo(video);
     }
 
     /**
      * Sets the embed video.
+     *
      * @param videoUrl Video URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
@@ -459,6 +529,7 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed video.
+     *
      * @param videoUrl Video URL.
      * @return {@link MessageEmbedBuilder} for chaining.
      */
@@ -468,6 +539,7 @@ public class MessageEmbedBuilder {
 
     /**
      * Sets the embed video.
+     *
      * @param video {@link EmbedVideo}.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#setVideo(String, String)
@@ -475,25 +547,38 @@ public class MessageEmbedBuilder {
     public MessageEmbedBuilder setVideo(EmbedVideo video) {
         try {
             videoField.set(embed, video);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return this;
     }
 
     /**
-     * @param name Field name.
-     * @param value Field content.
+     * @param name   Field name.
+     * @param value  Field content.
      * @param inline Whether to inline the field or not.
      * @return {@link MessageEmbedBuilder} for chaining.
      * @see MessageEmbedBuilder#addField(EmbedField)
      */
     public static EmbedField createField(String name, String value, Boolean inline) {
-        EmbedField field = new EmbedField();
+        EmbedField field = make(EmbedField.class);
         Class<EmbedField> c = EmbedField.class;
         try {
             ReflectUtils.setField(c, field, "name", name);
             ReflectUtils.setField(c, field, "value", value);
             ReflectUtils.setField(c, field, "inline", inline);
-        } catch (Throwable e) { Main.logger.error(e); }
+        } catch (Throwable e) {
+            Main.logger.error(e);
+        }
         return field;
+    }
+
+    private static <T> T make(@NonNull Class<T> clazz) {
+        try {
+            return ReflectUtils.invokeConstructorWithArgs(clazz);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            Main.logger.error(e);
+            return null;
+        }
     }
 }

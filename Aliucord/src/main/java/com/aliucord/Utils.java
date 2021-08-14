@@ -222,20 +222,9 @@ public class Utils {
      * @param value The value representing this choice
      * @return CommandChoice
      */
-    @SuppressWarnings("JavaReflectionMemberAccess")
+    @Deprecated
     public static CommandChoice createCommandChoice(String name, String value) {
-        CommandChoice choice = new CommandChoice();
-        try {
-            if (commandChoiceNameField == null) {
-                commandChoiceNameField = CommandChoice.class.getDeclaredField("name");
-                commandChoiceNameField.setAccessible(true);
-                commandChoiceValueField = CommandChoice.class.getDeclaredField("value");
-                commandChoiceValueField.setAccessible(true);
-            }
-            commandChoiceNameField.set(choice, name);
-            commandChoiceValueField.set(choice, value);
-        } catch (Throwable e) { Main.logger.error(e); }
-        return choice;
+        return new CommandChoice(name, value);
     }
 
     /**

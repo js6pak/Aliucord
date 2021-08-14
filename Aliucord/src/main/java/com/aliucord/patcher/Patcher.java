@@ -7,7 +7,8 @@ package com.aliucord.patcher;
 
 import android.os.Bundle;
 
-import com.aliucord.*;
+import com.aliucord.Logger;
+import com.aliucord.Main;
 import com.discord.app.AppActivity;
 
 import java.lang.reflect.Member;

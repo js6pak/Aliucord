@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.aliucord.CollectionUtils;
 import com.aliucord.entities.Plugin;
-import com.aliucord.patcher.*;
+import com.aliucord.patcher.Patcher;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.lang.reflect.Method;

@@ -9,15 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.aliucord.CollectionUtils;
-import com.discord.api.message.embed.EmbedAuthor;
-import com.discord.api.message.embed.EmbedField;
-import com.discord.api.message.embed.EmbedFooter;
-import com.discord.api.message.embed.EmbedImage;
-import com.discord.api.message.embed.EmbedProvider;
-import com.discord.api.message.embed.EmbedThumbnail;
-import com.discord.api.message.embed.EmbedType;
-import com.discord.api.message.embed.EmbedVideo;
-import com.discord.api.message.embed.MessageEmbed;
+import com.discord.api.message.embed.*;
 import com.discord.api.utcdatetime.UtcDateTime;
 
 import java.util.Collection;

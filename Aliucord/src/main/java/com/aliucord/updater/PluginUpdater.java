@@ -7,12 +7,7 @@ package com.aliucord.updater;
 
 import android.text.TextUtils;
 
-import com.aliucord.Constants;
-import com.aliucord.Http;
-import com.aliucord.Logger;
-import com.aliucord.PluginManager;
-import com.aliucord.SettingsUtils;
-import com.aliucord.Utils;
+import com.aliucord.*;
 import com.aliucord.api.NotificationsAPI;
 import com.aliucord.entities.NotificationData;
 import com.aliucord.entities.Plugin;
@@ -20,10 +15,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import kotlin.Unit;
